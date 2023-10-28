@@ -1,0 +1,30 @@
+version: '3.2'
+
+services:
+
+  cronicle:
+    container_name: cronicle
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./data:/opt/cronicle/data:rw
+      - ./logs:/opt/cronicle/logs:rw 
+      - ./plugins:/opt/cronicle/plugins
+      - ./history:/opt/cronicle/history
+    ports:
+      - 3012:3012
+    environment:
+      - CRONICLE_Storage_Filesystem_base_dir=/opt/cronicle/data
+      - CRONICLE_echo=1
+      - CRONICLE_foreground=1 
+      - CRONICLE_color=1
+      - debug_level=0
+    command: [ "bash", "-c", "node bin/entrypoint.js & tail -f /dev/null" ]
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:3012/api/app/ping || exit 1"]
+      interval: 5s
+      timeout: 1s
+      retries: 3

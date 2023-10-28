@@ -1,0 +1,43 @@
+version: '3.2'
+
+services:
+  
+  jenkins-ssh-agent:
+    container_name: jenkins-ssh-agent
+    build:
+      context: .
+      dockerfile: Dockerfile.ssh-python-agent
+    environment:
+      - JAVA_HOME=/opt/java/openjdk
+      - AGENT_WORKDIR=/home/jenkins/agent
+      - JENKINS_AGENT_HOME=/home/jenkins
+      - JENKINS_AGENT_SSH_PUBKEY=$JENKINS_AGENT_PUB_KEY
+    restart: on-failure
+    expose:
+      - 22
+    networks:
+      jenkins_net:
+        ipv4_address: "192.168.121.3"
+
+  jenkins-server:  
+    container_name: jenkins-server
+    image: jenkins/jenkins:latest-jdk17
+    privileged: true
+    user: root
+    ports:
+      - 8087:8080
+      - 50000:50000
+    networks:
+      jenkins_net:
+        ipv4_address: "192.168.121.2"
+
+
+networks:
+  jenkins_net:
+    name: jenkins_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.121.0/24"
+          gateway: "192.168.121.1"

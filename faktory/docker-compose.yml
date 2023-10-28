@@ -1,0 +1,24 @@
+version: '3.2'
+
+services:
+  
+  faktory-server-development:
+    container_name: faktory-server
+    image: contribsys/faktory:latest
+    command: ./faktory -b :7419 -w :7420 -e development -l debug
+    ports:
+      - "7419:7419"
+      - "7420:7420"
+    environment:
+      - FAKTORY_SKIP_PASSWORD=true
+  
+  faktory-server-production:
+    container_name: faktory-server
+    image: contribsys/faktory:latest
+    command: ./faktory -b :7419 -w :7420 -e production
+    ports:
+      - "7419:7419"
+      - "7420:7420"
+    environment:
+      - FAKTORY_PASSWORD=this_is_a_fake_password
+      - FAKTORY_SKIP_PASSWORD=false

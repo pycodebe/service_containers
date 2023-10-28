@@ -1,0 +1,11 @@
+backup_setup/*
+logs/*
+data/*
+plugins/*
+history/*
+
+!history_of_configurations/.initial_config.txt
+!logs/.gitkeep
+!data/.gitkeep
+!plugins/.gitkeep
+!history/.gitkeep
