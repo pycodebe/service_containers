@@ -12,8 +12,9 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - ./data:/opt/cronicle/data:rw
       - ./logs:/opt/cronicle/logs:rw 
-      - ./plugins:/opt/cronicle/plugins
-      - ./history:/opt/cronicle/history
+      - ./plugins:/opt/cronicle/plugins:rw
+      - ./history:/opt/cronicle/history:rw
+      - ./specific_ssh:/root/.ssh:ro
     ports:
       - 3012:3012
     environment:
@@ -21,7 +22,6 @@ services:
       - CRONICLE_echo=1
       - CRONICLE_foreground=1 
       - CRONICLE_color=1
-      - debug_level=0
     command: [ "bash", "-c", "node bin/entrypoint.js & tail -f /dev/null" ]
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:3012/api/app/ping || exit 1"]

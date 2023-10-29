@@ -3,9 +3,11 @@ logs/*
 data/*
 plugins/*
 history/*
+specific_ssh/*
 
 !history_of_configurations/.initial_config.txt
 !logs/.gitkeep
 !data/.gitkeep
 !plugins/.gitkeep
 !history/.gitkeep
+!specific_ssh/.gitkeep
