@@ -1,0 +1,11 @@
+version: '3.2'
+
+services:
+
+  clamav:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - ./data:/data
+      command: [ "bash", "-c", "cron && tail -f /dev/null" ]
